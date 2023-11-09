@@ -19,7 +19,7 @@ public class Skin {
         return name;
     }
 
-    public void setName(String name) {
+    public static void setName(String name) {
         this.name = name;
     }
 
@@ -27,7 +27,7 @@ public class Skin {
         return rarity;
     }
 
-    public void setRarity(String rarity) {
+    public static void setRarity(String rarity) {
         this.rarity = rarity;
     }
 
