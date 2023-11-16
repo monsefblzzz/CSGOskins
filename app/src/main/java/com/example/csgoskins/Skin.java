@@ -1,8 +1,22 @@
 package com.example.csgoskins;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Skin {
 
-    String id, name, rarity, image;
+    @SerializedName("id")
+    private String id;
+
+    private String name;
+
+    @SerializedName("rarity")
+    private String Rarity;
+
+    @SerializedName("image")
+    private String image;
+
+    @SerializedName("statTrak")
+    private boolean hasStatTrak;
 
     public Skin() {
     }
@@ -19,16 +33,16 @@ public class Skin {
         return name;
     }
 
-    public static void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     public String getRarity() {
-        return rarity;
+        return Rarity;
     }
 
-    public static void setRarity(String rarity) {
-        this.rarity = rarity;
+    public void setRarity(String rarity) {
+        this.Rarity = rarity;
     }
 
     public String getImage() {
@@ -44,7 +58,7 @@ public class Skin {
         return "Skin{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", rarity='" + rarity + '\'' +
+                ", rarity='" + Rarity + '\'' +
                 ", image='" + image + '\'' +
                 '}';
     }

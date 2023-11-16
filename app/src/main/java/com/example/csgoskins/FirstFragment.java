@@ -15,13 +15,17 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.csgoskins.databinding.FragmentFirstBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FirstFragment extends Fragment {
 
@@ -56,29 +60,32 @@ public class FirstFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    void refresh() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+    public void refresh() {
+        skinsRetrofit service = skinAPI.getRetrofitInstance().create(skinsRetrofit.class);
+        Call<List<Skin>> call = service.getSkins();
 
-        executor.execute(() -> {
-            skinsAPI api = new skinsAPI();
-            String result = String.valueOf(api.getSkinPorId("skin-1246428"));
-            Log.d("DEBUG", result);
-        });
-        handler.post(() -> {
-            // Aquest codi s'executa en primer pla.
-            adapter.clear();
-            for (Skin skin : skins) {
-                adapter.add(peli);
+        call.enqueue(new Callback<List<Skin>>() {
+            @Override
+            public void onResponse(Call<List<Skin>> call, Response<List<Skin>> response) {
+                if(response.isSuccessful()) {
+                    List<Skin> skins = response.body();
+                    ArrayAdapter<Skin> adapter = new ArrayAdapter<>(
+                            getContext(),
+                            R.layout.listaskins_row,
+                            R.id.skinElement,
+                            skins
+                    );;
+                    binding.listaSkins.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Skin>> call, Throwable t) {
+
             }
         });
-
     }
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ArrayList<Skin> items;
-        ArrayAdapter<Skin> adapter;
 
     }
 
